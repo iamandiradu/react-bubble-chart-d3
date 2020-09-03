@@ -47,6 +47,7 @@ export default class BubbleChart extends Component {
       padding,
       showLegend,
       showValue,
+      showAnimations,
       legendPercentage,
     } = this.props;
     // Reset the svg element to a empty state.
@@ -92,6 +93,7 @@ export default class BubbleChart extends Component {
       bubbleClickFun,
       valueFont,
       showValue,
+      showAnimations,
       labelFont,
     } = this.props;
 
@@ -122,11 +124,11 @@ export default class BubbleChart extends Component {
       .style("fill", function(d) { return d.data.color ? d.data.color : color(nodes.indexOf(d)); })
       .style("z-index", 1)
       .on('mouseover', function(d) {
-        d3.select(this).attr("r", d.r * 1.04);
+        showAnimations && d3.select(this).attr("r", d.r * 1.04);
       })
       .on('mouseout', function(d) {
         const r = d.r - (d.r * 0.04);
-        d3.select(this).attr("r", r);
+        showAnimations && d3.select(this).attr("r", r);
         tooltip.style("visibility", "hidden");
       })
       .on("click", function(d){return tooltip.style("visibility", d.data.customTooltip ? "visible" : "hidden").text(d.data.customTooltip);})
@@ -296,6 +298,7 @@ BubbleChart.propTypes = {
   padding: PropTypes.number,
   showLegend: PropTypes.bool,
   showValue: PropTypes.bool,
+  showAnimations: PropTypes.bool,
   legendPercentage: PropTypes.number,
   legendFont: PropTypes.shape({
     family: PropTypes.string,
@@ -328,6 +331,7 @@ BubbleChart.defaultProps = {
   padding: 0,
   showLegend: true,
   showValue: true,
+  showAnimations: true,
   legendPercentage: 20,
   legendFont: {
     family: 'Arial',
