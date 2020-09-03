@@ -108,6 +108,14 @@ export default class BubbleChart extends Component {
         bubbleClickFun(d.label);
     });
 
+    const tooltip = d3.select("body")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("position", "absolute")
+      .style("opacity", "1")
+      .style("z-index", "10")
+      .style("visibility", "hidden");
+
     node.append("circle")
       .attr("id", function(d) { return d.id; })
       .attr("r", function(d) { return d.r - (d.r * .04); })
@@ -119,7 +127,11 @@ export default class BubbleChart extends Component {
       .on('mouseout', function(d) {
         const r = d.r - (d.r * 0.04);
         d3.select(this).attr("r", r);
-      });
+        tooltip.style("visibility", "hidden");
+      })
+      .on("click", function(d){return tooltip.style("visibility", d.data.customTooltip ? "visible" : "hidden").text(d.data.customTooltip);})
+      .on("mousemove", function(){return tooltip.style("top",
+          (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");});
 
     node.append("clipPath")
       .attr("id", function(d) { return "clip-" + d.id; })
