@@ -184,7 +184,12 @@ export default class BubbleChart extends Component {
 
 
     // Center the texts inside the circles.
-    d3.selectAll(".label-text").attr("x", function(d) {
+    d3.selectAll(".label-text").style("font-size", function (d) {
+      var self = d3.select(this);
+      var width = self.node().getBBox().width;
+      d.hideLabel = width * 1.05 > d.r * 2;
+      return d.hideLabel ? `${labelFont.size-2}px` : `${labelFont.size}px`;
+    }).attr("x", function (d) {
       const self = d3.select(this);
       const width = self.node().getBBox().width;
       return -(width/2);
